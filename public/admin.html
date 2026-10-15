@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>FileVault — Admin Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <!-- ── Login View ──────────────────────────────────────────── -->
+  <main class="container" id="loginView">
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>FileVault</h1>
+          <span class="logo-tag">admin panel</span>
+        </div>
+      </div>
+      <a href="/" class="admin-link" title="Back to Upload">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+      </a>
+    </header>
+
+    <div class="login-card">
+      <h2>Admin Login</h2>
+      <p class="login-subtitle">Authenticate to access uploaded files</p>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginUsername">Username</label>
+          <input type="text" id="loginUsername" placeholder="Enter username" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
+      </form>
+      <div class="login-error" id="loginError"></div>
+    </div>
+  </main>
+
+  <!-- ── Dashboard View ──────────────────────────────────────── -->
+  <main class="container admin-container" id="dashboardView" style="display: none;">
+    <header class="admin-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+            <polyline points="13 2 13 9 20 9"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>FileVault</h1>
+          <span class="logo-tag">dashboard</span>
+        </div>
+      </div>
+      <div class="admin-actions">
+        <a href="/" class="btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          Upload Page
+        </a>
+        <button class="btn-secondary" id="refreshBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+            <polyline points="23 4 23 10 17 10"/>
+            <polyline points="1 20 1 14 7 14"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+          Refresh
+        </button>
+        <button class="btn-secondary btn-danger" id="logoutBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <div class="stat-label">Total Files</div>
+        <div class="stat-value" id="statTotalFiles">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Size</div>
+        <div class="stat-value" id="statTotalSize">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Storage Mode</div>
+        <div class="stat-value" id="statMode">—</div>
+        <div class="stat-sub" id="statModeSub"></div>
+      </div>
+    </div>
+
+    <!-- Files Table -->
+    <div class="files-card" id="filesCard">
+      <div class="files-card-header">
+        <h3>Uploaded Files</h3>
+        <span class="file-count" id="fileCountLabel">—</span>
+      </div>
+      <div id="filesBody"></div>
+    </div>
+  </main>
+
+  <!-- Confirmation Modal (hidden) -->
+  <div class="modal-overlay" id="deleteModal" style="display: none;">
+    <div class="modal-box">
+      <h3>Delete File</h3>
+      <p>Are you sure you want to permanently delete <span class="modal-fname" id="deleteFileName">this file</span>? This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="modal-cancel" id="deleteCancelBtn">Cancel</button>
+        <button class="modal-confirm-delete" id="deleteConfirmBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/admin.js"></script>
+</body>
+</html>

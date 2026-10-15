@@ -1,0 +1,9 @@
+# Wrangler config for the Discord webhook relay Worker.
+# Deploy from inside the worker/ folder:  npx wrangler deploy
+name = "discord-relay"
+main = "worker.js"
+compatibility_date = "2025-06-01"
+
+# Secrets are NOT stored here. Set them after the first deploy with:
+#   npx wrangler secret put DISCORD_WEBHOOK_URL
+#   npx wrangler secret put RELAY_SECRET      (optional)

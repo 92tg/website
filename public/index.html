@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FileVault — VirusScanner">
+  <title>FileVault — FileScan For Virus</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <!-- Background grid effect -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <main class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+            <polyline points="13 2 13 9 20 9"/>
+            <line x1="9" y1="13" x2="15" y2="13"/>
+            <line x1="9" y1="17" x2="15" y2="17"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>FileVault</h1>
+          <span class="logo-tag">File Scanner</span>
+        </div>
+      </div>
+      <a href="/admin" class="admin-link" title="Admin Dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </a>
+    </header>
+
+    <!-- Upload Card -->
+    <div class="upload-card" id="uploadCard">
+      <!-- Drop Zone -->
+      <div class="dropzone" id="dropzone">
+        <div class="dropzone-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <p class="dropzone-text">Drag & drop your file here</p>
+        <p class="dropzone-hint">or click to browse</p>
+        <input type="file" id="fileInput" accept=".lua,.luau,.txt" hidden>
+        <div class="dropzone-badge">
+          <span>.lua</span>
+          <span>.luau</span>
+          <span>.txt</span>
+        </div>
+      </div>
+
+      <!-- File Info (shown after selection) -->
+      <div class="file-info" id="fileInfo" style="display: none;">
+        <div class="file-info-header">
+          <div class="file-icon" id="fileIcon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+              <polyline points="13 2 13 9 20 9"/>
+            </svg>
+          </div>
+          <div class="file-details">
+            <p class="file-name" id="fileName">—</p>
+            <p class="file-size" id="fileSize">—</p>
+          </div>
+          <button class="file-remove" id="fileRemove" title="Remove file">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Description field -->
+        <div class="description-field">
+          <label for="description">Description <span class="optional">(optional)</span></label>
+          <textarea id="description" placeholder="Add a note about this file…" maxlength="500" rows="2"></textarea>
+          <div class="char-count"><span id="charCount">0</span>/500</div>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-container" id="progressContainer" style="display: none;">
+        <div class="progress-header">
+          <span class="progress-label" id="progressLabel">Uploading…</span>
+          <span class="progress-percent" id="progressPercent">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+
+      <!-- Status Messages -->
+      <div class="status-message" id="statusMessage" style="display: none;"></div>
+
+      <!-- Upload Button -->
+      <button class="upload-btn" id="uploadBtn" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        Upload File
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Max file size: <span id="maxSizeDisplay">5MB</span> · Accepted: .lua, .luau, .txt</p>
+      <p class="footer-muted">Check For Viruses The Uploaded Files</p>
+    </footer>
+  </main>
+
+  <script src="/upload.js"></script>
+</body>
+</html>
